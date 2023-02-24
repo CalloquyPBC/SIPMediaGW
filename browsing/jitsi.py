@@ -13,9 +13,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 
 
-jitsiFQDN = os.environ.get('WEBRTC_DOMAIN')
-if not jitsiFQDN:
-    jitsiFQDN = "rendez-vous.renater.fr"
+jitsiFQDN = os.environ.get('WEBRTC_DOMAIN') or "8x8.vc"
 
 UIHelperPath = os.environ.get('UI_HELPER_PATH')
 confMapperURL = os.environ.get('CONFMAPPER')
@@ -27,7 +25,8 @@ UIKeyMap = { "#": "window.JitsiMeetUIHelper.executeCommand('show-dtmf-menu')",
              "2": "window.JitsiMeetUIHelper.executeCommand('toggle-video')",
              "3": "window.JitsiMeetUIHelper.executeCommand('toggle-chat')",
              "4": "window.JitsiMeetUIHelper.executeCommand('toggle-tile-view')",
-             "5": "window.JitsiMeetUIHelper.executeCommand('toggle-raise-hand')",}
+             "5": "window.JitsiMeetUIHelper.executeCommand('toggle-raise-hand')",
+             }
 
 if not UIHelperPath:
     UIHelperPath = "file:///var/UIHelper/src/index.html"
@@ -44,6 +43,7 @@ if not UIHelperPath:
 class Jitsi (Browsing):
 
     def getRoomName(self):
+        print("Getting room name from confMapper", flush=True)
         reqUrl = '{}?id={}'.format(confMapperURL,self.room)
         print("ConfMapper request URL: "+reqUrl, flush=True)
         r = requests.get(reqUrl, verify=False)
