@@ -2,3 +2,4 @@
 .idea/
 .vagrant
 logs/
+.DS_Store

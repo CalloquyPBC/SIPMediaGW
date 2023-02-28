@@ -13,6 +13,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.remote_connection import LOGGER, logging
 
+
 class Browsing:
     def __init__(self, width, height, room=None, name=None):
         self.url = ''

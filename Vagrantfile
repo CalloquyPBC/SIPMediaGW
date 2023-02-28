@@ -1,4 +1,4 @@
-HOST = "192.168.75.13"
+HOST = "172.16.1.30"
 
 Vagrant.configure(2) do |config|
 
@@ -9,8 +9,8 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder ".", "/sipmediagw", type: "virtualbox",  owner: "vagrant", group: "vagrant"
 
   config.vm.provider "virtualbox" do |vb|
-      vb.memory = "8192"
-      vb.cpus = 4
+      vb.memory = "16384"
+      vb.cpus = 8
   end
 
   config.ssh.forward_agent = true
