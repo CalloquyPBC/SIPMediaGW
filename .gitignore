@@ -3,3 +3,4 @@
 .vagrant
 logs/
 .DS_Store
+test/kamailio/kamailio_db/
