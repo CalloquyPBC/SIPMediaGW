@@ -14,13 +14,13 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 jitsiFQDN = os.environ.get('WEBRTC_DOMAIN') or "app.dev.calloquy.com"
-
 UIHelperPath = os.environ.get('UI_HELPER_PATH')
 confMapperURL = os.environ.get('CONFMAPPER')
 IVRTimeout = int(os.environ.get('IVR_TIMEOUT'))
 
-testMeetingURL = os.environ.get('MEETING_URL')
+testParticipantToken = os.environ.get('PARTICIPANT_TOKEN')
 testMeetingToken = os.environ.get('MEETING_TOKEN')
+testMeetingURL = os.environ.get('MEETING_URL')
 
 # Define the keymap for DTMF
 UIKeyMap = {"#": "window.JitsiMeetUIHelper.executeCommand('show-dtmf-menu')",
@@ -33,44 +33,37 @@ UIKeyMap = {"#": "window.JitsiMeetUIHelper.executeCommand('show-dtmf-menu')",
 
 # If no UIHelper is configured, use the default one.
 # Write the config.json file based on the sample and the environment
-if not UIHelperPath:
-    UIHelperPath = "file:///var/UIHelper/src/index.html"
-    UIHelperConfig = json.load(open('/var/UIHelper/src/config_sample.json'))
-    UIHelperConfig['domain'] = 'https://{}'.format(jitsiFQDN)
-
-    if confMapperURL:
-        UIHelperConfig['ivr']['confmapper_url'] = confMapperURL.rsplit('/',1)[0]+'/'
-        UIHelperConfig['ivr']['confmapper_endpoint'] = confMapperURL.rsplit('/',1)[1]
-
-    with open('/var/UIHelper/src/config.json', 'w', encoding='utf-8') as f:
-        json.dump(UIHelperConfig, f, ensure_ascii=False, indent=4)
+# if not UIHelperPath:
+#     UIHelperPath = "file:///var/UIHelper/src/index.html"
+#     UIHelperConfig = json.load(open('/var/UIHelper/src/config_sample.json'))
+#     UIHelperConfig['domain'] = 'https://{}'.format(jitsiFQDN)
+#
+#     if confMapperURL:
+#         UIHelperConfig['ivr']['confmapper_url'] = confMapperURL.rsplit('/',1)[0]+'/'
+#         UIHelperConfig['ivr']['confmapper_endpoint'] = confMapperURL.rsplit('/',1)[1]
+#
+#     with open('/var/UIHelper/src/config.json', 'w', encoding='utf-8') as f:
+#         json.dump(UIHelperConfig, f, ensure_ascii=False, indent=4)
 
 
 class Jitsi (Browsing):
 
-    def getRoomName(self):
-        return
-        # print("Getting room name from confMapper", flush=True)
-        # reqUrl = '{}?id={}'.format(confMapperURL,self.room)
-        # print("ConfMapper request URL: "+reqUrl, flush=True)
-        # r = requests.get(reqUrl, verify=False)
-        # mapping = json.loads(r.content.decode('utf-8'))
-        # if 'conference' in mapping:
-        #     return mapping['conference']
-        # elif 'error' in mapping:
-        #     raise Exception(mapping['error'])
-        # else:
-        #     return
-
     def setUrl(self):
-        if testMeetingURL:
-            self.UIKeyMap = UIKeyMap
-            self.url = testMeetingURL
-
         if testMeetingToken:
             urlBase = 'https://{}/conference/join/{}'.format(jitsiFQDN, testMeetingToken)
-            self.UIKeyMap = UIKeyMap
             self.url = urlBase
+            print("testMeetingToken: "+self.url, flush=True)
+        elif testMeetingURL:
+            self.UIKeyMap = UIKeyMap
+            self.url = testMeetingURL
+            print("testMeetingURL: "+self.url, flush=True)
+        elif testParticipantToken:
+            urlBase = 'https://{}/conference/room/{}/manualRec'.format(jitsiFQDN, testParticipantToken)
+            self.url = urlBase
+            print("testParticipantToken: "+self.url, flush=True)
+        else:
+            self.url = 'https://www.calloquy.com'
+            print("default: "+self.url, flush=True)
 
         # if UIHelperPath:
         #     self.url = '{}?display_name={}'.format(UIHelperPath, self.name)
@@ -175,3 +168,5 @@ class Jitsi (Browsing):
             # WebDriverWait(self.driver, 5).until_not(EC.presence_of_element_located((By.CSS_SELECTOR,"#jitsiConferenceFrame0")))
         except Exception as e:
             print("Iframe error: unable to unset self", flush=True)
+
+print("Browsing mod initialized", flush=True)
