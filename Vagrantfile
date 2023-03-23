@@ -25,5 +25,6 @@ Vagrant.configure(2) do |config|
   # Set a specific VM name
   config.vm.provider "virtualbox" do |v|
     v.name = "SIPMediaGW_AllInOne"
+    v.gui = 1
   end
 end
