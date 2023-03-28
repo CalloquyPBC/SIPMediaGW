@@ -15,6 +15,6 @@ services:
     command:
             - /bin/sh
             - -c
-            - "baresip -f /var/.baresip -v ${DIAL}"
+            - "baresip -f /var/.baresip ${DIAL}"
 
 

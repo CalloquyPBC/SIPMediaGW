@@ -202,7 +202,7 @@ opus_bitrate		28000 # 6000-510000
 #opus_ms_streams	2	#number of streams
 #opus_ms_c_streams	2	#number of coupled streams
 
-vumeter_stderr		yes
+vumeter_stderr		no
 
 #jack_connect_ports	yes
 

@@ -76,7 +76,7 @@ HOST_TZ=$(cat /etc/timezone) \
 ROOM=$room \
 PREFIX=$prefix \
 ID=$id \
-docker compose -p ${gwName} up -d --force-recreate --remove-orphans gw
+docker compose -p ${gwName} up -d gw
 
 checkGwStatus $gwName
 sipUri=$(docker container exec gw$id  sh -c "cat /var/.baresip/accounts |

@@ -26,4 +26,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /var
 
-CMD ["baresip", "-f","/var/.baresip", "-v"]
+CMD ["baresip", "-f","/var/.baresip","-v","warning"]
